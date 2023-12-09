@@ -1,7 +1,7 @@
-import '../extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart' as wv;
 
+import '../extensions.dart';
 import 'base.dart';
 
 class WidgetsWebView extends WebView {
@@ -35,14 +35,14 @@ class WidgetsWebViewState extends WebViewState<WidgetsWebView> {
       buildAsync: options.buildAsync,
       enableCaching: options.enableCaching,
       factoryBuilder: options.factoryBuilder,
-      isSelectable: options.isSelectable,
+      // isSelectable: options.isSelectable,
       key: widget.key,
       baseUrl: options.baseUrl,
       customStylesBuilder: options.customStylesBuilder,
       customWidgetBuilder: options.customWidgetBuilder,
       onErrorBuilder: options.onErrorBuilder,
       onLoadingBuilder: options.onLoadingBuilder,
-      onSelectionChanged: options.onSelectionChanged,
+      // onSelectionChanged: options.onSelectionChanged,
       onTapImage: options.onTapImage,
       onTapUrl: options.onTapUrl,
       rebuildTriggers: options.rebuildTriggers,

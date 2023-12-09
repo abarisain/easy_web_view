@@ -32,8 +32,6 @@ class MarkdownState extends WebViewState<MarkdownWebView> {
   Widget builder(BuildContext context, Size size, String contents) {
     final options = widget.options;
     if (widget.src.isValidUrl) {
-      // TODO: Check for markdown files from assets
-      // TODO: Check for markdown files form file system
       return RemoteContent(
         src: widget.src,
         headers: options.markdown.headers,

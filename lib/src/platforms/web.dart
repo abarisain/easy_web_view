@@ -39,7 +39,8 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
       _iframe?.onLoad.listen((event) {
-        widget.onLoaded?.call(EasyWebViewControllerWrapper._(_iframe));
+        final wrapper = EasyWebViewControllerWrapper._(_iframe);
+        widget.onLoaded?.call(wrapper);
       });
     });
     super.initState();
