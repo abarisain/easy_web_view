@@ -1,3 +1,8 @@
+## 1.6.1
+
+* Removed rebuild trigger option
+* Updating dependencies
+
 ## 1.6.0
 
 * Adding windows platform

@@ -45,7 +45,7 @@ class WidgetsWebViewState extends WebViewState<WidgetsWebView> {
       // onSelectionChanged: options.onSelectionChanged,
       onTapImage: options.onTapImage,
       onTapUrl: options.onTapUrl,
-      rebuildTriggers: options.rebuildTriggers,
+      // rebuildTriggers: options.rebuildTriggers,
       renderMode: options.renderMode,
       textStyle: options.textStyle,
     );
