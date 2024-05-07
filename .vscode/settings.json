@@ -1,5 +1,6 @@
 {
-    "cSpell.words": [
-        "iframe"
-    ]
+  "cSpell.words": [
+    "iframe"
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/3.19.3"
 }
