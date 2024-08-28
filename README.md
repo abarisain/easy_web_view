@@ -6,7 +6,7 @@
 
 # easy_web_view
 
-Easy Web Views in Flutter on Web, Mobile and Desktop\*!
+Simple Web Views in Flutter on Web, Mobile and Desktop\*!
 
 - Supports HTML Content or a Single Element
 - Supports Markdown Source

@@ -1,6 +1,3 @@
-import 'package:html2md/html2md.dart' as html2md;
-import 'package:markdown/markdown.dart' as md;
-
 extension StringUtils on String {
   bool get isValidHtml => this.contains('<html>') && this.contains('</html>');
 
@@ -10,26 +7,6 @@ extension StringUtils on String {
       this.startsWith('/');
 
   bool get isValidMarkdown => !isValidUrl && !isValidHtml;
-
-  String toMarkdown() {
-    if (isValidHtml) return html2md.convert(this);
-    return this;
-  }
-
-  String toHtml() {
-    if (isValidMarkdown) return md.markdownToHtml(this);
-    return this;
-  }
-
-  String toDataUrl() {
-    if (!isValidUrl) {
-      String _content = this;
-      if (isValidMarkdown) _content = toHtml();
-      if (isValidHtml) _content = toHtml().wrapHtml();
-      return "data:text/html;charset=utf-8,${Uri.encodeComponent(_content)}";
-    }
-    return this;
-  }
 
   String wrapHtml({
     String title = 'Document',

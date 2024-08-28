@@ -17,8 +17,6 @@ class _BasicExampleState extends State<BasicExample> {
   static ValueKey key3 = const ValueKey('key_2');
   bool _isHtml = false;
   bool _blockNavigation = false;
-  bool _isMarkdown = false;
-  bool _useWidgets = false;
   bool _editing = false;
   bool _isSelectable = false;
   bool _showSummernote = false;
@@ -68,7 +66,6 @@ class _BasicExampleState extends State<BasicExample> {
                           setState(() {
                             _isHtml = val;
                             if (val) {
-                              _isMarkdown = false;
                               src = htmlContent;
                             } else {
                               src = url;
@@ -84,34 +81,6 @@ class _BasicExampleState extends State<BasicExample> {
                         if (mounted) {
                           setState(() {
                             _blockNavigation = val;
-                          });
-                        }
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Markdown Content'),
-                      value: _isMarkdown,
-                      onChanged: (val) {
-                        if (mounted) {
-                          setState(() {
-                            _isMarkdown = val;
-                            if (val) {
-                              _isHtml = false;
-                              src = markdownContent;
-                            } else {
-                              src = url;
-                            }
-                          });
-                        }
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Use Widgets'),
-                      value: _useWidgets,
-                      onChanged: (val) {
-                        if (mounted) {
-                          setState(() {
-                            _useWidgets = val;
                           });
                         }
                       },
@@ -135,7 +104,6 @@ class _BasicExampleState extends State<BasicExample> {
                           setState(() {
                             _showSummernote = val;
                             if (val) {
-                              _isMarkdown = false;
                               _isHtml = true;
                               src = summernoteHtml;
                             } else {
@@ -159,8 +127,6 @@ class _BasicExampleState extends State<BasicExample> {
                             onLoaded: (_) {
                               print('$key: Loaded: $src');
                             },
-                            isMarkdown: _isMarkdown,
-                            convertToWidgets: _useWidgets,
                             key: key,
                           )),
                       Expanded(
@@ -171,8 +137,6 @@ class _BasicExampleState extends State<BasicExample> {
                           },
                           src: src2,
                           key: key2,
-                          isMarkdown: _isMarkdown,
-                          convertToWidgets: _useWidgets,
                         ),
                       ),
                     ],
@@ -185,15 +149,13 @@ class _BasicExampleState extends State<BasicExample> {
                       ),
                       Expanded(
                           flex: 1,
-                          child: Container(
+                          child: SizedBox(
                             width: (open) ? 500 : 0,
                             child: EasyWebView(
                               src: src3,
                               onLoaded: (_) {
                                 print('$key3: Loaded: $src3');
                               },
-                              isMarkdown: _isMarkdown,
-                              convertToWidgets: _useWidgets,
                               key: key3,
                             ),
                           )),

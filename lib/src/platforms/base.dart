@@ -1,8 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:webview_windows/webview_windows.dart'
-    show WebviewPopupWindowPolicy;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart'
     show
         WidgetFactory,
@@ -12,10 +11,9 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
         OnLoadingBuilder,
         ImageMetadata,
         RenderMode;
+import 'package:webview_windows/webview_windows.dart'
+    show WebviewPopupWindowPolicy;
 
-import 'package:flutter/material.dart';
-
-import '../extensions.dart';
 import '../widgets/optionally_sized_child.dart';
 
 abstract class WebView extends StatefulWidget {
@@ -57,7 +55,7 @@ class WebViewState<T extends WebView> extends State<T> {
   }
 
   String get url {
-    return widget.src.toDataUrl();
+    return "";
   }
 }
 
