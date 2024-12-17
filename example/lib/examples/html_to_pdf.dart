@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
-import 'package:file_saver/file_saver.dart';
 
+import 'package:async/async.dart';
 import 'package:easy_web_view/easy_web_view.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:async/async.dart';
 import 'package:flutter/services.dart';
 
 class HtmlToPdfTest extends StatefulWidget {
@@ -72,23 +71,12 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
                         final res = eventMessage['result'];
                         log(res.runtimeType.toString());
                         if (res is Uint8List) {
-                          // final pdfResult = utf8.decode(res);
-                          if (kIsWeb) {
-                            await FileSaver.instance.saveFile(
-                              'easy_web_view_invoice',
-                              res,
-                              'pdf',
-                              mimeType: MimeType.PDF,
-                            );
-                          } else {
-                            await FileSaver.instance.saveAs(
-                              'easy_web_view_invoice',
-                              res,
-                              'pdf',
-                              MimeType.PDF,
-                            );
-                          }
-
+                          await save(
+                            name: 'easy_web_view_invoice',
+                            bytes: res,
+                            ext: 'pdf',
+                            mimeType: MimeType.pdf,
+                          );
                           log(res.runtimeType.toString());
                         }
                       }
@@ -101,6 +89,29 @@ class _HtmlToPdfTestState extends State<HtmlToPdfTest> {
           );
         },
       ),
+    );
+  }
+}
+
+Future<void> save({
+  required String name,
+  required Uint8List bytes,
+  required String ext,
+  required MimeType mimeType,
+}) async {
+  if (kIsWeb) {
+    await FileSaver.instance.saveFile(
+      name: 'easy_web_view_invoice',
+      bytes: bytes,
+      ext: 'pdf',
+      mimeType: MimeType.pdf,
+    );
+  } else {
+    await FileSaver.instance.saveAs(
+      name: 'easy_web_view_invoice',
+      bytes: bytes,
+      ext: 'pdf',
+      mimeType: MimeType.pdf,
     );
   }
 }

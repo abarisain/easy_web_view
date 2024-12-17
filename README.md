@@ -22,10 +22,12 @@ Online Demo: https://rodydavis.github.io/easy_web_view
 
 ## Platforms
 
-- Web
-- Android
-- iOS
-- Windows
+- [X] Web
+- [X] Android
+- [X] iOS
+- [X] MacOS
+- [X] Windows
+- [ ] Linux
 
 ## Getting Started
 
@@ -42,14 +44,9 @@ For Loading a new url or changing width/height just call setState!
 )
 ```
 
-## iOS/Android
+## iOS/MacOS/Android
 
-Setup iOS Info.plist:
-
-```xml
-<key>io.flutter.embedded_views_preview</key>
-<true/>
-```
+Follow setup: https://pub.dev/packages/webview_flutter
 
 ### Windows
 

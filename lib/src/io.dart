@@ -29,7 +29,7 @@ class EasyWebView extends EasyWebViewBase {
   @override
   Widget build(BuildContext context) {
     if (!canBuild()) {
-      if (Platform.isIOS || Platform.isAndroid) {
+      if (Platform.isIOS || Platform.isMacOS || Platform.isAndroid) {
         return NativeWebView(
           key: key,
           src: src,

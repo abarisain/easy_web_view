@@ -31,13 +31,14 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
   EasyWebViewControllerWrapper._(this._controller);
 
   @override
-  Future<void> evaluateJSMobile(String js) {
-    return _controller.runJavaScript(js);
+  Future<void> evaluateJSMobile(String js) async {
+    return await _controller.runJavaScript(js);
   }
 
   @override
-  Future<String> evaluateJSWithResMobile(String js) {
-    return _controller.runJavaScriptReturningResult(js) as Future<String>;
+  Future<String> evaluateJSWithResMobile(String js) async {
+    final result = _controller.runJavaScriptReturningResult(js);
+    return result.toString();
   }
 
   @override
@@ -49,48 +50,13 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 }
 
 class NativeWebViewState extends WebViewState<NativeWebView> {
-  late wv.WebViewController controller;
+  wv.WebViewController controller = wv.WebViewController();
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-
-    controller = wv.WebViewController();
-    controller.loadRequest(Uri.parse(url));
-    controller.setNavigationDelegate(
-      wv.NavigationDelegate(
-        onNavigationRequest: (request) async {
-          if (widget.options.navigationDelegate == null) {
-            return wv.NavigationDecision.navigate;
-          }
-          final _navDecision = await widget
-              .options.navigationDelegate!(WebNavigationRequest(request.url));
-          return _navDecision == WebNavigationDecision.prevent
-              ? wv.NavigationDecision.prevent
-              : wv.NavigationDecision.navigate;
-        },
-      ),
-    );
-
-    controller.setJavaScriptMode(wv.JavaScriptMode.unrestricted);
-    widget.options.crossWindowEvents
-        .map((event) => controller.addJavaScriptChannel(
-              event.name,
-              onMessageReceived: (javascriptMessage) {
-                event.eventAction(javascriptMessage.message);
-              },
-            ))
-        .toSet();
-
-    // onWebViewCreated: (value) {
-    //   controller = value;
-    //   if (widget.onLoaded != null) {
-    //     widget.onLoaded!(EasyWebViewControllerWrapper._(value));
-    //   }
-    // },
-
-    // Enable hybrid composition.
-    // if (Platform.isAndroid) wv.WebView.platform = wv.SurfaceAndroidWebView();
+    reload();
   }
 
   @override
@@ -101,8 +67,39 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
     }
   }
 
-  reload() {
-    controller.reload();
+  Future<void> reload() async {
+    if (!_initialized) {
+      _initialized = true;
+      await controller.setJavaScriptMode(wv.JavaScriptMode.unrestricted);
+      await controller.setNavigationDelegate(wv.NavigationDelegate(
+        onNavigationRequest: (navigationRequest) async {
+          if (widget.options.navigationDelegate == null) {
+            return wv.NavigationDecision.navigate;
+          }
+          final _navDecision = await widget.options
+              .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
+          return _navDecision == WebNavigationDecision.prevent
+              ? wv.NavigationDecision.prevent
+              : wv.NavigationDecision.navigate;
+        },
+        onPageFinished: (value) {
+          if (widget.onLoaded != null) {
+            widget.onLoaded!(EasyWebViewControllerWrapper._(controller));
+          }
+        },
+      ));
+      if (widget.options.crossWindowEvents.isNotEmpty) {
+        for (final channel in widget.options.crossWindowEvents) {
+          await controller.addJavaScriptChannel(
+            channel.name,
+            onMessageReceived: (javascriptMessage) {
+              channel.eventAction(javascriptMessage.message);
+            },
+          );
+        }
+      }
+    }
+    await controller.loadRequest(Uri.parse(url));
   }
 
   @override
