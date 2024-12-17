@@ -46,7 +46,7 @@ class WebViewState<T extends WebView> extends State<T> {
   }
 
   String get url {
-    return "";
+    return widget.src;
   }
 }
 
