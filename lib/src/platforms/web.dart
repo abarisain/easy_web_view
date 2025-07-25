@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:html' as html;
 import 'dart:ui' as ui;
+import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class BrowserWebView extends WebView {
     required double? width,
     required double? height,
     required OnLoaded? onLoaded,
+    required WidgetBuilder? loadingBuilder,
     required this.options,
   }) : super(
           key: key,
@@ -21,6 +23,7 @@ class BrowserWebView extends WebView {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          loadingBuilder: loadingBuilder,
         );
 
   final WebViewOptions options;
@@ -39,7 +42,8 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       final _iframe = _iframeElementMap[widget.key];
       _iframe?.onLoad.listen((event) {
-        widget.onLoaded?.call(EasyWebViewControllerWrapper._(_iframe));
+        final wrapper = EasyWebViewControllerWrapper._(_iframe);
+        widget.onLoaded?.call(wrapper);
       });
     });
     super.initState();
@@ -47,8 +51,8 @@ class BrowserWebViewState extends WebViewState<BrowserWebView> {
 
   void setup(String? src, double width, double height) {
     final key = widget.key ?? ValueKey('');
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory('iframe-$url', (int viewId) {
+    ui_web.platformViewRegistry.registerViewFactory('iframe-$url',
+        (int viewId) {
       if (_iframeElementMap[key] == null) {
         _iframeElementMap[key] = html.IFrameElement();
       }

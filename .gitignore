@@ -40,3 +40,6 @@ lib/generated_plugin_registrant.dart
 **/*.lock
 example/pubspec.lock
 example/ios/Podfile.lock
+
+# FVM Version Cache
+.fvm/

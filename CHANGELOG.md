@@ -1,3 +1,4 @@
+
 ## 2.1.0
 
 - Added MacOS platform (webview_flutter)

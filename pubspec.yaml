@@ -10,13 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_markdown: ^0.7.3+1
-  flutter_widget_from_html: ^0.15.1
-  html2md: ^1.2.5
+  url_launcher: ^6.1.10
   http: ^1.2.2
   markdown: ^7.2.2
   permission_handler: ^11.3.1
-  url_launcher: ^6.0.12
   webview_flutter: ^4.9.0
   webview_windows: ^0.4.0
 

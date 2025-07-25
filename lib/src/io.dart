@@ -14,9 +14,7 @@ class EasyWebView extends EasyWebViewBase {
     double? height,
     double? width,
     OnLoaded? onLoaded,
-    bool isMarkdown = false,
-    bool convertToMarkdown = false,
-    bool convertToWidgets = false,
+    WidgetBuilder? loadingBuilder,
     WidgetBuilder? fallbackBuilder,
     WebViewOptions options = const WebViewOptions(),
   }) : super(
@@ -25,9 +23,7 @@ class EasyWebView extends EasyWebViewBase {
           height: height,
           width: width,
           onLoaded: onLoaded,
-          isMarkdown: isMarkdown,
-          convertToMarkdown: convertToMarkdown,
-          convertToWidgets: convertToWidgets,
+          loadingBuilder: loadingBuilder,
           fallbackBuilder: fallbackBuilder,
           options: options,
         );
@@ -42,6 +38,7 @@ class EasyWebView extends EasyWebViewBase {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          loadingBuilder: loadingBuilder,
           options: options,
         );
       }
@@ -53,6 +50,7 @@ class EasyWebView extends EasyWebViewBase {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          loadingBuilder: loadingBuilder,
           options: options,
         );
       }

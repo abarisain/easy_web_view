@@ -5,19 +5,14 @@ import 'base.dart';
 
 class NativeWebView extends WebView {
   const NativeWebView({
-    required Key? key,
-    required String src,
-    required double? width,
-    required double? height,
-    required OnLoaded? onLoaded,
+    required super.key,
+    required super.src,
+    required super.width,
+    required super.height,
+    required super.onLoaded,
+    required super.loadingBuilder,
     required this.options,
-  }) : super(
-          key: key,
-          src: src,
-          width: width,
-          height: height,
-          onLoaded: onLoaded,
-        );
+  });
 
   final WebViewOptions options;
 
@@ -52,11 +47,18 @@ class EasyWebViewControllerWrapper extends EasyWebViewControllerWrapperBase {
 class NativeWebViewState extends WebViewState<NativeWebView> {
   wv.WebViewController controller = wv.WebViewController();
   bool _initialized = false;
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
+    _setBackgroundColor();
     reload();
+  }
+
+  void _setBackgroundColor() {
+    controller.setBackgroundColor(
+        widget.options.native.backgroundColor ?? Colors.transparent);
   }
 
   @override
@@ -71,23 +73,29 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
     if (!_initialized) {
       _initialized = true;
       await controller.setJavaScriptMode(wv.JavaScriptMode.unrestricted);
-      await controller.setNavigationDelegate(wv.NavigationDelegate(
-        onNavigationRequest: (navigationRequest) async {
-          if (widget.options.navigationDelegate == null) {
-            return wv.NavigationDecision.navigate;
-          }
-          final _navDecision = await widget.options
-              .navigationDelegate!(WebNavigationRequest(navigationRequest.url));
-          return _navDecision == WebNavigationDecision.prevent
-              ? wv.NavigationDecision.prevent
-              : wv.NavigationDecision.navigate;
-        },
-        onPageFinished: (value) {
-          if (widget.onLoaded != null) {
-            widget.onLoaded!(EasyWebViewControllerWrapper._(controller));
-          }
-        },
-      ));
+      await controller.setNavigationDelegate(
+        wv.NavigationDelegate(
+          onNavigationRequest: (navigationRequest) async {
+            if (widget.options.navigationDelegate == null) {
+              return wv.NavigationDecision.navigate;
+            }
+            final navDecision = await widget.options.navigationDelegate!(
+              WebNavigationRequest(navigationRequest.url),
+            );
+            return navDecision == WebNavigationDecision.prevent
+                ? wv.NavigationDecision.prevent
+                : wv.NavigationDecision.navigate;
+          },
+          onPageFinished: (value) {
+            if (widget.onLoaded != null) {
+              widget.onLoaded!(EasyWebViewControllerWrapper._(controller));
+            }
+            setState(() {
+              _loading = false;
+            });
+          },
+        ),
+      );
       if (widget.options.crossWindowEvents.isNotEmpty) {
         for (final channel in widget.options.crossWindowEvents) {
           await controller.addJavaScriptChannel(
@@ -104,6 +112,9 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
+    if (_loading && widget.loadingBuilder != null) {
+      return widget.loadingBuilder!(context);
+    }
     return wv.WebViewWidget(
       key: widget.key,
       controller: controller,
