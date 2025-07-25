@@ -14,11 +14,13 @@ abstract class WebView extends StatefulWidget {
     required this.width,
     required this.height,
     required this.onLoaded,
+    required this.loadingBuilder,
   }) : super(key: key);
 
   final String src;
   final double? width, height;
   final OnLoaded? onLoaded;
+  final WidgetBuilder? loadingBuilder;
 }
 
 class WebViewState<T extends WebView> extends State<T> {
@@ -102,9 +104,11 @@ class WebViewOptions {
 class NativeWebViewOptions {
   const NativeWebViewOptions({
     this.headers,
+    this.backgroundColor,
   });
 
   final Map<String, String>? headers;
+  final Color? backgroundColor;
 }
 
 class BrowserWebViewOptions {

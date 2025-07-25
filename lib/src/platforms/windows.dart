@@ -13,6 +13,7 @@ class WindowsWebView extends WebView {
     required double? width,
     required double? height,
     required OnLoaded? onLoaded,
+    required WidgetBuilder? loadingBuilder,
     required this.options,
   }) : super(
           key: key,
@@ -20,6 +21,7 @@ class WindowsWebView extends WebView {
           width: width,
           height: height,
           onLoaded: onLoaded,
+          loadingBuilder: loadingBuilder,
         );
 
   final WebViewOptions options;

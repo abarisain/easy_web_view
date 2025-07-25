@@ -9,6 +9,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
     required this.width,
     required this.height,
     required this.onLoaded,
+    required this.loadingBuilder,
     required this.fallbackBuilder,
     required this.options,
   }) : super(key: key);
@@ -16,6 +17,7 @@ abstract class EasyWebViewBase extends StatelessWidget {
   final String src;
   final double? width, height;
   final OnLoaded? onLoaded;
+  final WidgetBuilder? loadingBuilder;
   final WidgetBuilder? fallbackBuilder;
   final WebViewOptions options;
 
