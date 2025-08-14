@@ -112,12 +112,15 @@ class NativeWebViewState extends WebViewState<NativeWebView> {
 
   @override
   Widget builder(BuildContext context, Size size, String contents) {
-    if (_loading && widget.loadingBuilder != null) {
-      return widget.loadingBuilder!(context);
-    }
-    return wv.WebViewWidget(
-      key: widget.key,
-      controller: controller,
+    return Stack(
+      children: [
+        wv.WebViewWidget(
+          key: widget.key,
+          controller: controller,
+        ),
+        if (_loading && widget.loadingBuilder != null)
+          widget.loadingBuilder!(context),
+      ],
     );
   }
 }
